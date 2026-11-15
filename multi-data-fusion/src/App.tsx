@@ -2955,6 +2955,18 @@ function SeverityBadge({
   );
 }
 
+function StatusBadge({
+  status,
+}: {
+  status: IncidentStatus;
+}) {
+  return (
+    <span className={`incident-status ${status}`}>
+      {status}
+    </span>
+  );
+}
+
 function MetricBar({
   label,
   value,
