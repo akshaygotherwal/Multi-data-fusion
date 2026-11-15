@@ -1590,21 +1590,6 @@ function PipelineConnector() {
   );
 }
 
-function MetaItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="meta-item">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
-
 /* =========================================================
    INCIDENTS
 ========================================================= */
@@ -1633,7 +1618,7 @@ function IncidentsPage({
   selectedEvidenceId: string;
   setSelectedEvidenceId: (id: string) => void;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData, incidents } = useResearchCase();
   const activeCount = incidents.filter(
     (incident) =>
       incident.status === "active" ||
@@ -1995,7 +1980,7 @@ function IncidentOverview({
 }: {
   incident: Incident;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData } = useResearchCase();
   return (
     <div className="overview-grid">
       <div className="panel">
@@ -2069,7 +2054,7 @@ function IncidentEvidence({
     id: string
   ) => void;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData } = useResearchCase();
   const items = evidenceData.filter((item) =>
     incident.evidenceIds.includes(item.id)
   );
@@ -2172,7 +2157,7 @@ function IncidentTimeline({
 }: {
   incident: Incident;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData } = useResearchCase();
   const items = evidenceData
     .filter((item) =>
       incident.evidenceIds.includes(item.id)
@@ -2549,7 +2534,7 @@ function EvidenceExplorer({
     id: string
   ) => void;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData } = useResearchCase();
   const sources = [
     "Temperature Sensor",
     "Pressure Sensor",
@@ -2719,7 +2704,7 @@ function TimelinePage({
   incident: Incident;
   onOpenInvestigation: () => void;
 }) {
-  const { evidence: evidenceData, incidents, conflicts } = useResearchCase();
+  const { evidence: evidenceData } = useResearchCase();
   return (
     <div className="page">
       <PageHeader
@@ -2993,59 +2978,8 @@ function MetricBar({
   );
 }
 
-function PipelineStep({
-  number,
-  label,
-  status,
-}: {
-  number: string;
-  label: string;
-  status: string;
-}) {
-  return (
-    <div className="pipeline-step">
-      <span className="pipeline-number">
-        {number}
-      </span>
-
-      <div>
-        <strong>{label}</strong>
-
-        <small>{status}</small>
-      </div>
-    </div>
-  );
-}
-
 /* =========================================================
    FORMATTING HELPERS
 ========================================================= */
-
-function formatMass(mass: MassMap): string {
-  const entries = Object.entries(mass)
-    .filter(([, value]) => value > 0.001)
-    .sort((a, b) => b[1] - a[1]);
-
-  return entries
-    .map(([key, value]) => {
-      const label =
-        key === THETA
-          ? "Θ"
-          : splitSet(key)
-              .map(                (member) =>
-                  DS_HYPOTHESES.find(
-                    (hypothesis) =>
-                      hypothesis.key ===
-                      member
-                  )?.label ?? member
-              )
-              .join(" + ");
-
-      return `${label}: ${(value * 100).toFixed(
-        1
-      )}%`;
-    })
-    .join(" · ");
-}
 
 export default App;
